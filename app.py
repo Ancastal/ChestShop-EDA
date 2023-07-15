@@ -29,9 +29,10 @@ st.subheader('Data Overview')
 st.dataframe(transactions_data.head())
 
 st.subheader('Find your transactions')
-search_term = st.text_input('Enter your search term here', '')
-filtered_data = transactions_data[transactions_data.apply(lambda row: search_term.lower() in str(row.astype(str)).lower(), axis=1)]
-st.dataframe(filtered_data)
+search_term = st.text_input('Enter your username here', '')
+if search_term in transactions_data['username'].unique():
+    filtered_data = transactions_data[transactions_data.apply(lambda row: search_term.lower() in str(row.astype(str)).lower(), axis=1)]
+    st.dataframe(filtered_data)
 
 # Overview Statistics
 st.subheader('Overview Statistics')
