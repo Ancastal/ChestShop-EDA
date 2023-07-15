@@ -28,6 +28,11 @@ transactions_data = load_data()
 st.subheader('Data Overview')
 st.dataframe(transactions_data.head())
 
+st.subheader('Find your transactions')
+search_term = st.text_input('Enter your search term here', '')
+filtered_data = transactions_data[transactions_data.apply(lambda row: search_term.lower() in str(row.astype(str)).lower(), axis=1)]
+st.dataframe(filtered_data)
+
 # Overview Statistics
 st.subheader('Overview Statistics')
 st.divider()
@@ -131,6 +136,7 @@ st.write(hot_cuboids)
 # Player Ranking
 st.divider()
 st.subheader('Player Ranking')
+st.write('The player ranking is based on the total amount of money spent by the player and the total number of transactions made by the player.')
 buyer_scores = transactions_data.groupby('username').agg({'price': 'sum', 'action': 'count'}).sum(axis=1)
 seller_scores = transactions_data.groupby('seller').agg({'price': 'sum', 'action': 'count'}).sum(axis=1)
 scores = buyer_scores.add(seller_scores, fill_value=0).sort_values(ascending=False)
